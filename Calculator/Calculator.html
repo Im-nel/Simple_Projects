@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="Visuals.css">
+</head> 
+<body>
+    <div class="container">
+        <div class="calculator">
+            <div class="display-container"> 
+                <div id="calculator__display">0</div>
+            </div>
+            <div class="keys-container">
+                <div class="calculator__keys">
+                <button id="BAC" onclick="buttonClicked('BAC')"><span id="SAC">AC</span></button>
+                <button id="BToggle" onclick="buttonClicked('BToggle')"><span id="SToggle">+/-</span></button>
+                <button id="BPR" onclick="buttonClicked('BPR')"><span id="SPR">%</span></button>
+                <button id="BDV" onclick="buttonClicked('BDV')"><span id="SDV">&divide;</span></button>
+                <button id="B7" onclick="buttonClicked('B7')"><span id="S7">7</span></button>
+                <button id="B8" onclick="buttonClicked('B8')"><span id="S8">8</span></button>
+                <button id="B9" onclick="buttonClicked('B9')"><span id="S9">9</span></button>
+                <button id="BX" onclick="buttonClicked('BX')"><span id="SX">x</span></button>
+                <button id="B4" onclick="buttonClicked('B4')"><span id="S4">4</span></button>
+                <button id="B5" onclick="buttonClicked('B5')"><span id="S5">5</span></button>
+                <button id="B6" onclick="buttonClicked('B6')"><span id="S6">6</span></button>
+                <button id="BMinus" onclick="buttonClicked('BMinus')"><span id="SMinus">-</span></button>
+                <button id="B1" onclick="buttonClicked('B1')"><span id="S1">1</span></button>
+                <button id="B2" onclick="buttonClicked('B2')"><span id="S2">2</span></button>
+                <button id="B3" onclick="buttonClicked('B3')"><span id="S3">3</span></button>
+                <button id="BPlus" onclick="buttonClicked('BPlus')"><span id="SPlus">+</span></button>
+                <button id="B0" onclick="buttonClicked('B0')"><span id="S0">0</span></button>
+                <button id="BComma" onclick="buttonClicked('BComma')"><span id="SComma">.</span></button>
+                <button id="BEqual" onclick="buttonClicked('BEqual')"><span id="SEqual">=</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="Script.js"></script>
+</body>
+</html>
