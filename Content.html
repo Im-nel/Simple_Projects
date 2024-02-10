@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            overflow-x: hidden;
+            -webkit-user-select: none;  /* Chrome, Safari, Opera */
+            -moz-user-select: none;     /* Firefox */
+            -ms-user-select: none;      /* IE 10+ */
+            user-select: none;          /* Standard syntax */
+        }
+        * {
+            min-width: 0;
+            border: none;
+            position: relative;
+            z-index: 2;
+        }
+        button {
+            border-radius: 15px;
+            box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25),
+            -4px -4px 4px 0px rgba(56, 56, 56, 0.25);
+            background-color: #202020;
+            width: 65px;
+            height: 65px;
+        }
+        span {
+            font-size: 20px;
+            color: white;
+            font-weight: bold;
+        }
+        #SDV {
+            font-size: 30px;
+        }
+        #SPR {
+            font-size: 25px;
+        }
+        #SDV, #SAC, #SPR, #SToggle {
+            color: #525252;
+        }
+        #calculator__display {
+            font-family: Helvetica;
+            font-size: 40px;
+        }
+        .calculator__keys button {
+            margin: 0;
+            padding: 0;
+            border: none;
+            width: 65px; 
+            height: 65px; 
+        }
+        
+        .calculator__keys {
+            display: grid;
+            grid-template-columns: repeat(4, min-content);
+            row-gap: 15px;
+            column-gap: 15px;
+            justify-content: center; 
+        }
+        .calculator {
+            top: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between; 
+            height: 600px; 
+            width: 330px;
+        }
+        
+        #calculator__display {
+            text-align: center;
+            font-size: 80px; 
+            top: 20px;
+            overflow: hidden;
+            white-space: nowrap;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+        .display-container {
+            background-color: #202020; 
+            box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25),
+                        -4px -4px 4px 0px rgba(56, 56, 56, 0.25); 
+            padding: 15px; 
+            padding-bottom: 55px;
+            width: 100%; 
+            box-sizing: border-box; 
+            border-radius: 15px 15px 15px 15px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            height: 150px;
+            overflow: hidden;
+            top: 15px;
+        }
+        #B0 {
+            width: 145px;
+            grid-column: span 2;
+        }
+        .keys-container {
+            background-color: #202020; 
+            box-shadow: 4px 4px 4px 0px rgba(0, 0, 0, 0.25),
+                        -4px -4px 4px 0px rgba(56, 56, 56, 0.25); 
+            padding: 15px; 
+            height: 390px;
+            border-radius: 20px 20px 20px 20px;
+        }
+        .calculator__keys button {
+            z-index: 3;
+        }
+        .display-container {
+            position: relative; 
+        }
+            .bottom-text {
+                position: absolute; 
+                bottom: 0; 
+                left: 0; 
+                width: 100%; 
+                margin: 0;  
+                padding: 0 15px; 
+                box-sizing: border-box; 
+                text-align: center;
+                overflow-x: auto; 
+                overflow-y: hidden;
+                white-space: nowrap;
+                box-sizing: border-box;
+                color: #FFDB58;
+                font-family: Helvetica;
+                direction: rtl;  
+                top: 130px;
+            }
+    </style>
+    <script>
+        var operation = null;
+var previousValue = null;
+
+function buttonClicked(buttonId) {
+    var display = document.getElementById('calculator__display');
+    var buttonValue = buttonId.slice(1); 
+
+    switch(buttonId) {
+        case 'B1':
+        case 'B2':
+        case 'B3':
+        case 'B4':
+        case 'B5':
+        case 'B6':
+        case 'B7':
+        case 'B8':
+        case 'B9':
+        case 'B0':
+                if (display.innerHTML.length < 21) { 
+                    if (display.innerHTML === '0') {
+                        display.innerHTML = buttonValue;
+                    } else {
+                        display.innerHTML += buttonValue;
+                    }
+                    adjustFontSize();
+                }
+                break;
+                case 'BAC':
+            display.innerHTML = '0';
+            display.style.fontSize = "80px"; 
+            break;
+            case 'BToggle':
+                if (display.innerHTML !== '0' && display.innerHTML !== '-0') {
+                    display.innerHTML = display.innerHTML.startsWith('-') ? display.innerHTML.slice(1) : '-' + display.innerHTML;
+                }
+                break;
+            case 'BPR':
+                display.innerHTML = parseFloat(display.innerHTML) / 100;
+                break;
+            case 'BPlus':
+            case 'BMinus':
+            case 'BX':
+            case 'BDV':
+                previousValue = parseFloat(display.innerHTML);
+                operation = buttonId;
+                display.innerHTML = '0';
+                break;
+        case 'BComma':
+            if (!display.innerHTML.includes('.')) {
+                display.innerHTML += '.';
+            }
+            break;
+                        case 'BEqual':
+                        if (previousValue !== null && operation !== null) {
+                            var currentValue = parseFloat(display.innerHTML);
+                            switch(operation) {
+                                case 'BPlus':
+                                    display.innerHTML = previousValue + currentValue;
+                                    break;
+                                case 'BMinus':
+                                    display.innerHTML = previousValue - currentValue;
+                                    break;
+                                case 'BX':
+                                    display.innerHTML = previousValue * currentValue;
+                                    break;
+                                case 'BDV':
+                                    if (currentValue !== 0) {
+                                        display.innerHTML = previousValue / currentValue;
+                                    } else {
+                                        display.innerHTML = 'Error';
+                                    }
+                                    break;
+                            }
+                            previousValue = null;
+                            operation = null;
+                            adjustFontSize();
+
+                            if (display.innerHTML.length >= 5) {
+                                var currentFontSize = parseFloat(display.style.fontSize.slice(0, -2));
+                                display.style.fontSize = (currentFontSize - 20) + 'px';
+                            }
+                        }
+                        break;
+                }
+            }
+        function adjustFontSize() {
+            var display = document.getElementById('calculator__display');
+            var container = document.querySelector('.display-container');
+
+            var temp = document.createElement('div');
+            temp.style.position = 'absolute';
+            temp.style.whiteSpace = 'nowrap';
+            temp.style.fontSize = window.getComputedStyle(display, null).getPropertyValue('font-size');
+            temp.innerHTML = display.innerHTML;
+            document.body.appendChild(temp);
+
+            var textWidth = temp.offsetWidth;
+            var containerWidth = container.offsetWidth;
+
+            document.body.removeChild(temp);
+
+            var style = window.getComputedStyle(display, null).getPropertyValue('font-size');
+            var fontSize = parseFloat(style);
+
+            if (textWidth >= containerWidth) {
+                display.style.fontSize = (fontSize - 5) + "px";
+            }
+            else if (textWidth < containerWidth - 50 && fontSize < 80) {
+                display.style.fontSize = (fontSize + 5) + "px";
+            }
+        }
+        
+    </script>
+</head> 
+<body>
+    <div class="container">
+        <div class="calculator">
+            <div class="display-container"> 
+                <div id="calculator__display">0</div>
+            </div>
+            <div class="keys-container">
+                <div class="calculator__keys">
+                <button id="BAC" onclick="buttonClicked('BAC')"><span id="SAC">AC</span></button>
+                <button id="BToggle" onclick="buttonClicked('BToggle')"><span id="SToggle">+/-</span></button>
+                <button id="BPR" onclick="buttonClicked('BPR')"><span id="SPR">%</span></button>
+                <button id="BDV" onclick="buttonClicked('BDV')"><span id="SDV">&divide;</span></button>
+                <button id="B7" onclick="buttonClicked('B7')"><span id="S7">7</span></button>
+                <button id="B8" onclick="buttonClicked('B8')"><span id="S8">8</span></button>
+                <button id="B9" onclick="buttonClicked('B9')"><span id="S9">9</span></button>
+                <button id="BX" onclick="buttonClicked('BX')"><span id="SX">x</span></button>
+                <button id="B4" onclick="buttonClicked('B4')"><span id="S4">4</span></button>
+                <button id="B5" onclick="buttonClicked('B5')"><span id="S5">5</span></button>
+                <button id="B6" onclick="buttonClicked('B6')"><span id="S6">6</span></button>
+                <button id="BMinus" onclick="buttonClicked('BMinus')"><span id="SMinus">-</span></button>
+                <button id="B1" onclick="buttonClicked('B1')"><span id="S1">1</span></button>
+                <button id="B2" onclick="buttonClicked('B2')"><span id="S2">2</span></button>
+                <button id="B3" onclick="buttonClicked('B3')"><span id="S3">3</span></button>
+                <button id="BPlus" onclick="buttonClicked('BPlus')"><span id="SPlus">+</span></button>
+                <button id="B0" onclick="buttonClicked('B0')"><span id="S0">0</span></button>
+                <button id="BComma" onclick="buttonClicked('BComma')"><span id="SComma">.</span></button>
+                <button id="BEqual" onclick="buttonClicked('BEqual')"><span id="SEqual">=</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
